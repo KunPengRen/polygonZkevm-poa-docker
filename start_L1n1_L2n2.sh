@@ -22,13 +22,13 @@ node_count=$(docker node ls --format "{{.ID}}" | wc -l)
 if [ "$node_count" -gt 1 ]; then
     # 开启单个L1节点
     docker stack deploy -c l1_node1.yml l1
-    sleep(3)
+    sleep 3
     # 开启第一个L2节点
     docker stack deploy -c l2n1.yml l2n1
-    sleep(8)
+    sleep 5
     # 开启第二个L2节点
     docker stack deploy -c l2n2.yml l2n2
-    sleep(3)
+    sleep 5
 else
   echo "There aren't enough machines."
 fi
