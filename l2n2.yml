@@ -313,16 +313,15 @@ services:
 
   zkevm-approve:
     image: tasse00/polygonzkevm-node:20231215
-    deploy:
-      placement:
-        constraints:
-        - node.hostname==worker-003
     networks:
       - l1
       - l2
     deploy:
       restart_policy:
         condition: none
+      placement:
+        constraints:
+        - node.hostname==worker-003
     environment:
       - ZKEVM_NODE_STATE_DB_HOST=l2n2_zkevm-state-db
     configs:
