@@ -33,6 +33,9 @@ services:
           memory: 2G
         reservations:
           memory: 1G
+      placement:
+        constraints:
+        - node.hostname==worker-002
     configs:
       - source: zkevm_state_db_init_sql
         target: /docker-entrypoint-initdb.d/init.sql
@@ -55,6 +58,9 @@ services:
           memory: 2G
         reservations:
           memory: 1G
+      placement:
+        constraints:
+        - node.hostname==worker-002
 
     environment:
       - POSTGRES_USER=pool_user
@@ -75,6 +81,9 @@ services:
           memory: 2G
         reservations:
           memory: 1G
+      placement:
+        constraints:
+        - node.hostname==worker-002
     configs:
       - source: zkevm_event_db_init_sql
         target: /docker-entrypoint-initdb.d/init.sql
@@ -89,6 +98,10 @@ services:
 
   zkevm-sequencer:
     image: tasse00/polygonzkevm-node:20231215
+    deploy:
+      placement:
+        constraints:
+        - node.hostname==worker-002
     networks:
       - l1
       - l2
@@ -100,10 +113,6 @@ services:
         target: /app/config.toml
       - source: test_genesis_config
         target: /app/genesis.json
-    # volumes:
-    #   - ./config/test.node.config.toml:/app/config.toml
-    #   - ./config/test.genesis.config.json:/app/genesis.json
-    #   - ./:/datastreamer
     command:
       - "/bin/sh"
       - "-c"
@@ -111,6 +120,10 @@ services:
 
   zkevm-sequence-sender:
     image: tasse00/polygonzkevm-node:20231215
+    deploy:
+      placement:
+        constraints:
+        - node.hostname==worker-002
     networks:
       - l2
       - l1
@@ -125,10 +138,6 @@ services:
         target: /app/genesis.json
       - source: sequencer_keystore
         target: /pk/sequencer.keystore
-    # volumes:
-    #   - ./sequencer.keystore:/pk/sequencer.keystore
-    #   - ./config/test.node.config.toml:/app/config.toml
-    #   - ./config/test.genesis.config.json:/app/genesis.json
     command:
       - "/bin/sh"
       - "-c"
@@ -136,6 +145,10 @@ services:
 
   zkevm-json-rpc:
     image: tasse00/polygonzkevm-node:20231215
+    deploy:
+      placement:
+        constraints:
+        - node.hostname==worker-002
     networks:
       - l2
       - l1
@@ -161,6 +174,10 @@ services:
 
   zkevm-aggregator:
     image: tasse00/polygonzkevm-node:20231215
+    deploy:
+      placement:
+        constraints:
+        - node.hostname==worker-002
     networks:
       - l2
       - l1
@@ -185,6 +202,10 @@ services:
 
   zkevm-sync:
     image: tasse00/polygonzkevm-node:20231215
+    deploy:
+      placement:
+        constraints:
+        - node.hostname==worker-002
     # ports:
     #   - 9095:9091 # needed if metrics enabled
     networks:
@@ -207,6 +228,10 @@ services:
 
   zkevm-eth-tx-manager:
     image: tasse00/polygonzkevm-node:20231215
+    deploy:
+      placement:
+        constraints:
+        - node.hostname==worker-002
     # ports:
     #   - 9094:9091 # needed if metrics enabled
     networks:
@@ -235,6 +260,10 @@ services:
 
   zkevm-l2gaspricer:
     image: tasse00/polygonzkevm-node:20231215
+    deploy:
+      placement:
+        constraints:
+        - node.hostname==worker-002
     networks:
       - l2
       - l1
@@ -254,9 +283,12 @@ services:
       - "-c"
       - "/app/zkevm-node run --network custom --custom-network-file /app/genesis.json --cfg /app/config.toml --components l2gaspricer"
 
-  
   zkevm-prover:
     image: hermeznetwork/zkevm-prover:v3.0.2
+    deploy:
+      placement:
+        constraints:
+        - node.hostname==worker-002
     networks:
       - l2
     # ports:
@@ -272,6 +304,10 @@ services:
 
   zkevm-approve:
     image: tasse00/polygonzkevm-node:20231215
+    deploy:
+      placement:
+        constraints:
+        - node.hostname==worker-002
     networks:
       - l1
       - l2

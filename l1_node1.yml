@@ -7,6 +7,10 @@ networks:
 services:
   geth1:
     image: tasse00/polygonzkevm_l1_node:n1
+    deploy:
+      placement:
+        constraints:
+        - node.hostname==worker-006
     ports:
       - "8545:8545"
       - "8546:8546"
