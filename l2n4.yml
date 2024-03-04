@@ -101,7 +101,7 @@ services:
     deploy:
       placement:
         constraints:
-        - node.hostname==worker-005
+        - node.hostname==worker-026
     networks:
       - l1
       - l2
@@ -127,7 +127,7 @@ services:
     deploy:
       placement:
         constraints:
-        - node.hostname==worker-005
+        - node.hostname==worker-026
     networks:
       - l2
       - l1
@@ -156,7 +156,7 @@ services:
     deploy:
       placement:
         constraints:
-        - node.hostname==worker-005
+        - node.hostname==worker-026
     networks:
       - l2
       - l1
